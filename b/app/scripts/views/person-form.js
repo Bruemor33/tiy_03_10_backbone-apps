@@ -8,16 +8,23 @@ var userModel = require('../model/person');
 //User Creation form
 var UserForm = Backbone.View.extend({
   tagName: 'form',
-  id: 'first-name',
-  className: 'user-name-input',
+  id: 'userData',
   template: userFormTemplate,
   events: {
-    'submit': "userSubmit"
+    'submit': "userSubmission"
   },
   render: function(){
     this.$el.html(this.template());
     return this;
   },
+  userSubmission: function(event){
+    event.preventDefault();
+    var userPostData = this.$el.serializeArray().reduce(function(acum, i){
+      acum[i.name] = i.value;
+      return acum;
+    }, {});
+    this.collection.create(userPostData);
+  }
 
 })
 

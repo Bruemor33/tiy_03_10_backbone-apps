@@ -11,9 +11,22 @@ var UserSubmit = Backbone.View.extend({
   className: 'submit-button',
   template: userFormTemplate,
   events: {
-    'submit': "userSubmit"
+    'submit': "userSubmission"
   },
   initialize: function(){
-    
+
+  },
+  userSubmission: function(){
+    event.preventDefault();
+    var userPostData = this.$el.serializeArray().reduce(function(acum, i){
+      acum[i.name] = i.value;
+      return acum;
+    }, {});
+    this.collection.create(userPostData);
   }
 })
+
+//Exports
+module.exports = {
+  'UserSubmit': UserSubmit
+}
