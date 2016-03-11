@@ -10,7 +10,7 @@ var blogFormTemplate = require('../../template/blog-template.hbs');
 var blogModel = require('../model/blog');
 
 //Utility
-$.fn.serializeObject = function() {
+var eventSubmit = $.fn.serializeObject = function() {
   return this.serializeArray().reduce(function(acum, i) {
     acum[i.name] = i.value;
     return acum;
@@ -23,14 +23,20 @@ var Title = Backbone.View.extend({
   className: 'blog-input-title',
   template: blogFormTemplate,
   events: {
-
+    'submit': "blogSubmit"
   },
   render: function(){
     this.$el.html(this.template());
     return this;
   },
-  titleSubmit: function(){
-
+  blogSubmit: function(){
+    // this.eventSubmit();
+    event.preventDefault();
+    var blogData = this.$el.serializeArray().reduce(function(acum, i){
+      acum[i.name] = i.value;
+      return acum;
+    }, {});
+    this.collection.create(blogData);
   }
 
 });
